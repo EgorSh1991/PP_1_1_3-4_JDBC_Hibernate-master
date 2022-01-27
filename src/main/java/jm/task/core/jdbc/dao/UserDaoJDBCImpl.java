@@ -28,7 +28,9 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -50,7 +52,9 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -76,6 +80,7 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
+                assert preparedStatement != null;
                 preparedStatement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -99,7 +104,9 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                preparedStatement.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -114,10 +121,11 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         Connection connect = Util.getConnect();
         Statement statement = null;
+        ResultSet resultSet = null;
         List<User> users = new ArrayList<>();
         try {
             statement = connect.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
+            resultSet = statement.executeQuery("SELECT * FROM users");
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong(1));
@@ -130,7 +138,16 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         }finally {
             try {
-                statement.close();
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -153,7 +170,9 @@ public class UserDaoJDBCImpl implements UserDao {
             e.printStackTrace();
         } finally {
             try {
-                statement.close();
+                if (statement != null) {
+                    statement.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
